@@ -1,50 +1,49 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         int n = Integer.parseInt(br.readLine());
-        int[] parent = new int[n];
-        ArrayList<ArrayList<Integer>> tree = new ArrayList<>();
 
-        for (int i = 0; i < n; i++) {
-            tree.add(new ArrayList<>());
+        ArrayList<Integer>[] node = new ArrayList[n+1];
+        for (int i = 1; i < n + 1; i++) {
+            node[i] = new ArrayList<>();
         }
 
+        int[] visit = new int[n+1];
+        int[] parent = new int[n+1];
+
+        StringTokenizer st;
         for (int i = 0; i < n - 1; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
+            st = new StringTokenizer(br.readLine(), " ");
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
 
-            int a = Integer.parseInt(st.nextToken()) - 1;
-            int b = Integer.parseInt(st.nextToken()) - 1;
-
-            tree.get(a).add(b);
-            tree.get(b).add(a);
+            node[x].add(y);
+            node[y].add(x);
         }
 
-        // bfs
         Deque<Integer> queue = new ArrayDeque<>();
-        int[] visited = new int[n];
-        queue.add(0);
-        visited[0] = 1;
-        while(!queue.isEmpty()) {
-            int node = queue.pollFirst();
+        queue.addLast(1);
 
-            for (int i : tree.get(node)) {
-                if (visited[i] == 0) {
-                    visited[i] = 1;
-                    parent[i] = node;
-                    queue.addLast(i);
+        while(!queue.isEmpty()) {
+            int curr = queue.pollFirst();
+            if (visit[curr] == 1) continue;
+
+            visit[curr] = 1;
+
+            for (int next : node[curr]) {
+                if (visit[next] == 0) {
+                    queue.addLast(next);
+                    parent[next] = curr;
                 }
             }
         }
 
-        for (int i = 1; i < n; i++) {
-            bw.write(String.valueOf(parent[i] + 1) + "\n");
-            bw.flush();
+        for (int i = 2; i < n+1; i++) {
+            System.out.println(parent[i]);
         }
 
-        bw.close();
     }
 }
