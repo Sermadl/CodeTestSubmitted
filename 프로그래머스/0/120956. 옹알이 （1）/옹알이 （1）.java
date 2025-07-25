@@ -5,12 +5,10 @@ class Solution {
         
         for (int i=0; i < babbling.length; i++) {
             for (String word : words) {
-                babbling[i] = babbling[i].replaceAll(word, "1");
+                babbling[i] = babbling[i].replaceAll(word, " ");
             }
             
-            babbling[i] = babbling[i].replaceAll("1", "");
-            
-            if (babbling[i].length() == 0) answer++;
+            if (babbling[i].isBlank()) answer++;
         }
         
         return answer;
