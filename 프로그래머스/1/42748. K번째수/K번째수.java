@@ -7,7 +7,7 @@ class Solution {
         
         for (int i = 0; i < len; i++) {
             int[] tmp = Arrays.copyOfRange(array, commands[i][0] - 1, commands[i][1]);
-            tmp = Arrays.stream(tmp).sorted().toArray();
+            Arrays.sort(tmp);
             answer[i] = (tmp[commands[i][2] - 1]);
         }
         
